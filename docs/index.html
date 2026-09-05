@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finding Under-Clicked Winners: A CTR Opportunity Score for Ranked Content</title>
+<style>
+  :root{
+    --paper:#F6F4EF;
+    --ink:#1C1B19;
+    --ink-soft:#54514A;
+    --rule:#D8D3C6;
+    --teal:#1F6F5C;
+    --amber:#B5722A;
+    --box:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Source Serif 4","Iowan Old Style","Palatino Linotype",Georgia,serif;
+    line-height:1.65;
+  }
+  .wrap{
+    max-width:700px;
+    margin:0 auto;
+    padding:4rem 1.5rem 6rem;
+  }
+  header.title-block{
+    border-bottom:1px solid var(--rule);
+    padding-bottom:2.2rem;
+    margin-bottom:2.6rem;
+  }
+  h1{
+    font-size:2.05rem;
+    line-height:1.28;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin:0 0 0.9rem;
+  }
+  .meta{
+    font-family:"IBM Plex Sans Condensed","Helvetica Neue",Arial,sans-serif;
+    font-size:0.86rem;
+    color:var(--ink-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.4rem 1rem;
+  }
+  .meta span{white-space:nowrap;}
+  .abstract-box{
+    background:var(--box);
+    border:1px solid var(--rule);
+    border-left:3px solid var(--teal);
+    padding:1.3rem 1.5rem;
+    margin:1.8rem 0 0;
+    font-size:0.98rem;
+    color:var(--ink-soft);
+  }
+  .abstract-box strong{color:var(--ink);}
+  section{margin-bottom:2.6rem;}
+  h2{
+    font-size:1.25rem;
+    font-weight:700;
+    margin:0 0 1rem;
+    display:flex;
+    align-items:baseline;
+    gap:0.6rem;
+  }
+  h2 .num{
+    font-family:"IBM Plex Sans Condensed",sans-serif;
+    font-size:0.85rem;
+    color:var(--teal);
+    font-weight:600;
+  }
+  p{margin:0 0 1rem;max-width:64ch;}
+  ul,ol{margin:0 0 1rem;padding-left:1.3rem;}
+  li{margin-bottom:0.4rem;}
+  .fill{
+    border:1px dashed #B9AE93;
+    background:#FBF8EF;
+    color:#6B5E3C;
+    padding:0.9rem 1.1rem;
+    font-family:"IBM Plex Sans Condensed",sans-serif;
+    font-size:0.88rem;
+    border-radius:2px;
+    margin-bottom:1rem;
+  }
+  .fill::before{
+    content:"TO FILL IN";
+    display:block;
+    font-size:0.7rem;
+    letter-spacing:0.04em;
+    color:var(--amber);
+    margin-bottom:0.35rem;
+    font-weight:600;
+  }
+  figure{margin:1.4rem 0;}
+  figure img{width:100%;display:block;border:1px solid var(--rule);}
+  figcaption{
+    font-family:"IBM Plex Sans Condensed",sans-serif;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    margin-top:0.5rem;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-family:"IBM Plex Sans Condensed",sans-serif;
+    font-size:0.85rem;
+    margin:1rem 0 1.4rem;
+  }
+  th,td{
+    text-align:left;
+    padding:0.5rem 0.6rem;
+    border-bottom:1px solid var(--rule);
+  }
+  th{color:var(--ink-soft);font-weight:600;}
+  .tag{
+    display:inline-block;
+    font-family:"IBM Plex Sans Condensed",sans-serif;
+    font-size:0.72rem;
+    padding:0.15rem 0.5rem;
+    border-radius:2px;
+    background:#EFEAE0;
+    color:var(--ink-soft);
+  }
+  .playbook{
+    background:var(--box);
+    border:1px solid var(--rule);
+    padding:1.2rem 1.4rem;
+  }
+  .playbook li{margin-bottom:0.7rem;}
+  .credit{
+    font-family:"IBM Plex Sans Condensed",sans-serif;
+    font-size:0.86rem;
+    color:var(--ink-soft);
+    border-top:1px solid var(--rule);
+    padding-top:1.4rem;
+  }
+  .credit a{color:var(--teal);}
+  a{color:var(--teal);}
+  code{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:0.85em;
+    background:#EFEAE0;
+    padding:0.05em 0.35em;
+    border-radius:2px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <h1>Finding Under-Clicked Winners: A CTR Opportunity Score for Ranked Content</h1>
+    <div class="meta">
+      <span>FlyRank Search Intelligence Capstone</span>
+      <span>Lane: CTR / Engagement Opportunity Scoring</span>
+      <span id="date-span">[Fill: deploy date]</span>
+    </div>
+    <div class="abstract-box">
+      <strong>Abstract.</strong>
+      Pages that rank well don't always get clicked at the rate their position predicts, which leaves organic clicks on the table without any ranking change needed.
+      We build a position-adjusted expected-CTR model on 199,693 published pages from the FlyRank search warehouse, validated against an isotonic position-only baseline on a page-level holdout split to avoid leakage.
+      The model improved variance explained over the baseline (holdout R&sup2; 0.057 vs. 0.034) but did not improve average error (MAE 0.00309 vs. 0.00304) — a genuinely mixed result, reported as such rather than oversold.
+      We use the model's expected-CTR estimates to rank qualifying pages by estimated lost clicks and assign each a reason code and recommended action.
+      The output is a prioritized action list a content or SEO team can work top-down.
+    </div>
+  </header>
+
+  <section id="intro">
+    <h2><span class="num">1</span>Introduction</h2>
+    <p>Search teams often audit content by raw click-through rate, which conflates "bad snippet" with "bad position" — a result sitting at #9 and one sitting at #1 have structurally different CTR ceilings, so raw CTR alone misdirects effort.</p>
+    <p>This work supports one concrete decision: which pages should a content or SEO team review first, and what kind of review — metadata, content, or none?</p>
+  </section>
+
+  <section id="data">
+    <h2><span class="num">2</span>Data</h2>
+    <ul>
+      <li>Source: FlyRank ML Internship dataset, <code>FlyRank/internship-warehouse</code> on Hugging Face (gated release, read-token access).</li>
+      <li>Tables: <code>dim_content</code> (filtered to published, non-deleted content), <code>fact_content_daily_performance</code> (18 monthly partitions, Jan 2025 – Jun 2026), <code>fact_content_query_90d</code> (query breadth only).</li>
+      <li>Aggregation level: page (<code>content_hash_id</code>), not row or impression — no raw query-level exports retained downstream.</li>
+      <li>Exclusions: pages with fewer than 50 total impressions (noise-level) were dropped, leaving 199,693 qualifying pages. All identifiers in the source data are pre-hashed.</li>
+    </ul>
+    <p><em>Public-safe note: no client names, domains, raw URLs, or credentials appear anywhere in this paper or its linked repository.</em></p>
+  </section>
+
+  <section id="methods">
+    <h2><span class="num">3</span>Methodology</h2>
+    <ul>
+      <li><strong>Label.</strong> Page-level CTR = clicks / impressions, aggregated over the observed window.</li>
+      <li><strong>Baseline.</strong> Isotonic regression of CTR on rounded average position (impression-weighted, clipped to positions 1–20), fit only on the training split.</li>
+      <li><strong>Model.</strong> Gradient-boosted regressor (depth 3, 200 trees, learning rate 0.05) using average position and query breadth (distinct queries per page) as features.</li>
+      <li><strong>Validation design.</strong> Grouped split by page (not by row), 70/30 — 139,785 train pages, 59,908 holdout pages — so no page's own performance leaks into the curve or model that scores it.</li>
+      <li><strong>Leakage checks.</strong> Baseline curve and model are both fit exclusively on training pages; every metric reported below is holdout-only.</li>
+    </ul>
+  </section>
+
+  <section id="results">
+    <h2><span class="num">4</span>Results</h2>
+    <figure>
+      <img src="model_vs_baseline.png" alt="Model vs baseline CTR curve and MAE comparison">
+      <figcaption>Left: baseline expected-CTR curve fit against holdout pages. Right: holdout MAE, baseline vs. model.</figcaption>
+    </figure>
+    <table>
+      <thead><tr><th>Metric</th><th>Baseline (position-only)</th><th>Model (GBR)</th></tr></thead>
+      <tbody>
+        <tr><td>MAE (holdout)</td><td>0.00304</td><td>0.00309</td></tr>
+        <tr><td>R² (holdout)</td><td>0.034</td><td>0.057</td></tr>
+      </tbody>
+    </table>
+    <p>The result is genuinely mixed, and we report it as such. Adding query breadth as a feature nearly doubled R&sup2; (0.034 &rarr; 0.057) but did <strong>not</strong> reduce average absolute error — on a typical page the model is not more accurate than reading off the position curve alone. It is retained here because it feeds the ranking below, not because it clearly beats the baseline on every metric.</p>
+  </section>
+
+  <section id="limitations">
+    <h2><span class="num">5</span>Limitations &amp; Honest Framing</h2>
+    <ul>
+      <li>This is a snapshot analysis over a single aggregation window, not a causal or time-series claim — findings are <em>observed</em>, not <em>directional</em>, unless a time-aware version is added later.</li>
+      <li>CTR opportunity scores are decision-support, not proof of a fixable issue — a low score can also reflect SERP features, intent mismatch, or brand recognition rather than metadata quality.</li>
+      <li>No claim is made about Google's ranking algorithm or about causal refresh impact.</li>
+      <li>Sample after the impression-floor filter: 199,693 pages (139,785 train / 59,908 holdout). Holdout R&sup2; of 0.057 means most CTR variance is not explained by position and query breadth alone — treat page-level expected-CTR values as a rough prior, not a precise target.</li>
+      <li>Because the model shows a mixed result vs. the baseline (better R&sup2;, slightly worse MAE), the ranked list below should be read as directional prioritization, not a precise prediction of recoverable clicks.</li>
+    </ul>
+  </section>
+
+  <section id="recommendations">
+    <h2><span class="num">6</span>Ranked Recommendations</h2>
+    <table>
+      <thead><tr><th>Page</th><th>Avg. pos</th><th>Impressions</th><th>CTR</th><th>Expected CTR</th><th>Est. lost clicks</th><th>Reason</th></tr></thead>
+      <tbody>
+        <tr><td>content_8c6d8360…</td><td>7.71</td><td>99,290</td><td>0.045%</td><td>2.10%</td><td>2,039</td><td>CTR lagging</td></tr>
+        <tr><td>content_b64fb5a4…</td><td>5.21</td><td>758,188</td><td>0.151%</td><td>0.36%</td><td>1,594</td><td>CTR lagging</td></tr>
+        <tr><td>content_39e19a3e…</td><td>9.72</td><td>425,137</td><td>0.003%</td><td>0.36%</td><td>1,508</td><td>CTR lagging</td></tr>
+        <tr><td>content_e241d641…</td><td>4.10</td><td>1,829,204</td><td>0.312%</td><td>0.38%</td><td>1,257</td><td>Metadata issue</td></tr>
+        <tr><td>content_d0acf706…</td><td>2.22</td><td>312,069</td><td>0.049%</td><td>0.39%</td><td>1,062</td><td>Metadata issue</td></tr>
+        <tr><td>content_93aadc6e…</td><td>4.48</td><td>498,907</td><td>0.157%</td><td>0.37%</td><td>1,054</td><td>Metadata issue</td></tr>
+        <tr><td>content_80eb6221…</td><td>2.81</td><td>546,198</td><td>0.303%</td><td>0.50%</td><td>1,054</td><td>Metadata issue</td></tr>
+        <tr><td>content_300fd9ae…</td><td>5.62</td><td>362,425</td><td>0.056%</td><td>0.31%</td><td>909</td><td>CTR lagging</td></tr>
+        <tr><td>content_dcddbd42…</td><td>5.24</td><td>109,617</td><td>0.160%</td><td>0.94%</td><td>858</td><td>CTR lagging</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.85rem;color:var(--ink-soft)">Full ranked list of all 59,908 holdout pages is in <code>work/ranked_opportunities_holdout.csv</code> in the repo.</p>
+    <div class="playbook">
+      <p style="margin-bottom:0.6rem"><strong>General playbook, by reason code</strong></p>
+      <ol>
+        <li><span class="tag">High visibility, under-clicked</span> — rewrite title/meta description first; cheapest fix, fastest to test.</li>
+        <li><span class="tag">Top-10, CTR lagging</span> — content/snippet review; check the page still matches query intent.</li>
+        <li><span class="tag">On/above expected</span> — protect as-is; don't touch what's already outperforming its position.</li>
+        <li><span class="tag">Low visibility, under-clicked</span> — monitor only; lower priority given limited exposure.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="repro">
+    <h2><span class="num">7</span>Reproducibility</h2>
+    <ul>
+      <li>Capstone notebook: <code>work/capstone_ctr_opportunity_scoring.ipynb</code></li>
+      <li>All weekly assignment notebooks: <code>work/</code></li>
+      <li>Data access: gated Hugging Face release, read-token access — see the dataset card for request instructions.</li>
+    </ul>
+  </section>
+
+  <div class="credit">
+    Built on the FlyRank ML Internship dataset — <a href="https://flyrank.ai" target="_blank" rel="noopener">flyrank.ai</a>.
+  </div>
+
+</div>
+</body>
+</html>
